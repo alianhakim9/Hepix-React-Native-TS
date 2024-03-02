@@ -26,11 +26,15 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     color: "white",
+    width: "100%",
+    textAlign: "center",
   },
   number: {
     fontSize: 50,
     fontWeight: "bold",
     color: "#00D1FF",
+    width: "100%",
+    textAlign: "center",
   },
   symbol: {
     fontSize: 14,
@@ -40,6 +44,9 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 20,
     color: "white",
+    width: "100%",
+    textAlign: "center",
+    marginTop: 16,
   },
   blurBg: {
     position: "absolute",

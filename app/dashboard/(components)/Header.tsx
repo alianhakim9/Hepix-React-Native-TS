@@ -1,11 +1,41 @@
 import { View, Text, Pressable, StyleSheet } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { useEffect, useState } from "react";
+import storage from "../../../utils/storage";
 
 export const DashboardHeader = () => {
+  const [name, setName] = useState("");
+  useEffect(() => {
+    storage
+      .load({
+        key: "loginState",
+        autoSync: true,
+        syncInBackground: true,
+        syncParams: {
+          someFlag: true,
+        },
+      })
+      .then((ret) => {
+        if (ret) {
+          setName(ret.name);
+        }
+      })
+      .catch((err) => {
+        console.warn(err.message);
+        switch (err.name) {
+          case "NotFoundError":
+            // TODO;
+            break;
+          case "ExpiredError":
+            // TODO
+            break;
+        }
+      });
+  });
   return (
     <View style={styles.header}>
       <View style={styles.greetingContainer}>
-        <Text style={styles.greetingTxt}>Halo, Hanifah Indah</Text>
+        <Text style={styles.greetingTxt}>Halo, {name}</Text>
         <Text style={styles.greetingSubTxt}>Ahlan wa sahlan, selamat pagi</Text>
       </View>
       <Pressable style={styles.notifBtn}>

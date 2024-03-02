@@ -1,65 +1,38 @@
-import { router } from "expo-router";
+import { useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
 import {
   KeyboardAvoidingView,
   Platform,
+  SafeAreaView,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 import Toast from "react-native-toast-message";
-import ToSignUp from "../../../components/ToSignUp";
 import storage from "../../../utils/storage";
+import ToSignIn from "../../../components/ToSignIn";
 
-const Login = () => {
+export default function Index() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  const router = useRouter();
 
-  const onLogin = async () => {
+  const onRegister = async () => {
     storage
-      .load({
+      .save({
         key: "loginState",
-        autoSync: true,
-        syncInBackground: true,
-        syncParams: {
-          someFlag: true,
+        data: {
+          name: name,
+          email: email,
+          password: password,
         },
       })
-      .then((ret) => {
-        if (ret) {
-          if (email === ret.email && password === ret.password) {
-            storage
-              .save({
-                key: "isLoggedIn",
-                data: {
-                  isLoggedIn: true,
-                },
-              })
-              .then(() => {
-                router.replace("/dashboard");
-              });
-          }
-        } else {
-          Toast.show({
-            type: "error",
-            text1: "Please, sign up first",
-            position: "bottom",
-          });
-        }
-      })
-      .catch((err) => {
-        switch (err.name) {
-          case "NotFoundError":
-            // TODO;
-            break;
-          case "ExpiredError":
-            // TODO
-            break;
-        }
+      .then(() => {
+        router.replace("/auth/login");
       });
   };
 
@@ -72,6 +45,14 @@ const Login = () => {
         <SafeAreaView style={styles.container}>
           <View style={styles.innerContainer}>
             <Text style={styles.logo}>HEPIX</Text>
+            <TextInput
+              placeholder="Name"
+              style={styles.input}
+              placeholderTextColor={"#dedede"}
+              inputMode="text"
+              value={name}
+              onChangeText={setName}
+            />
             <TextInput
               placeholder="Email"
               style={styles.input}
@@ -88,17 +69,17 @@ const Login = () => {
               value={password}
               onChangeText={setPassword}
             />
-            <TouchableOpacity style={styles.btn} onPress={onLogin}>
-              <Text style={styles.btnText}>Sign In</Text>
+            <TouchableOpacity style={styles.btn} onPress={onRegister}>
+              <Text style={styles.btnText}>Sign Up</Text>
             </TouchableOpacity>
-            <ToSignUp />
+            <ToSignIn />
           </View>
         </SafeAreaView>
       </KeyboardAvoidingView>
       <Toast />
     </>
   );
-};
+}
 
 const styles = StyleSheet.create({
   rootContainer: {
@@ -148,8 +129,8 @@ const styles = StyleSheet.create({
     borderRadius: 12,
   },
   btnText: {
+    width: "100%",
     color: "#fff",
+    textAlign: "center",
   },
 });
-
-export default Login;

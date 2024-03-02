@@ -1,19 +1,19 @@
 import { Pressable, StyleSheet, View } from "react-native";
 
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { useRouter } from "expo-router";
+import { router, useRouter } from "expo-router";
 
 const BottomBar = () => {
   const route = useRouter();
   return (
     <View style={styles.bottomBar}>
-      <Pressable>
+      <Pressable onPress={() => router.push("/dashboard")}>
         <Ionicons name="home" size={24} />
       </Pressable>
       <Pressable onPress={() => route.push("/therapy")}>
         <Ionicons name="grid" size={24} />
       </Pressable>
-      <Pressable>
+      <Pressable onPress={() => router.push("/profile")}>
         <Ionicons name="person" size={24} />
       </Pressable>
     </View>

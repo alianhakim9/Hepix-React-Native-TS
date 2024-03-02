@@ -1,16 +1,32 @@
-import { Link } from "expo-router";
-import { StatusBar } from "expo-status-bar";
+import { Link, router } from "expo-router";
+import React, { useEffect } from "react";
 import { Pressable, SafeAreaView, StyleSheet, Text, View } from "react-native";
+import storage from "../utils/storage";
 
 export default function Index() {
+  useEffect(() => {
+    storage
+      .load({
+        key: "isLoggedIn",
+        autoSync: true,
+        syncInBackground: true,
+        syncParams: {
+          someFlag: true,
+        },
+      })
+      .then((ret) => {
+        if (ret && ret.isLoggedIn) {
+          router.replace("/dashboard");
+        }
+      });
+  }, []);
+
   return (
     <>
       <SafeAreaView style={styles.container}>
         <View style={styles.innerContainer}>
           <Text style={styles.txt}>HEPIX</Text>
-          <StatusBar style="light" backgroundColor="#323232" />
         </View>
-
         <Link href={"/auth/login"} asChild>
           <Pressable style={styles.btn}>
             <Text style={styles.btnText}>Get Started</Text>
@@ -44,6 +60,8 @@ const styles = StyleSheet.create({
   txt: {
     fontSize: 40,
     fontWeight: "bold",
+    width: "100%",
+    textAlign: "center",
     color: "#fff",
     letterSpacing: 16,
   },
@@ -65,5 +83,7 @@ const styles = StyleSheet.create({
   },
   btnText: {
     color: "#fff",
+    width: "100%",
+    textAlign: "center",
   },
 });

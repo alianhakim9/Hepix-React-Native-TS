@@ -2,10 +2,19 @@ import React from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
-const PowerButton = () => {
+interface IPowerButton {
+  onClick: () => void;
+  isOn?: boolean;
+}
+
+const PowerButton = ({ onClick, isOn }: IPowerButton) => {
   return (
-    <Pressable style={styles.powerBtn}>
-      <Ionicons name="power-outline" size={28} color={"#323232"} />
+    <Pressable style={styles.powerBtn} onPress={onClick}>
+      {isOn ? (
+        <Ionicons name="pause" size={28} color={"#323232"} />
+      ) : (
+        <Ionicons name="power-outline" size={28} color={"#323232"} />
+      )}
     </Pressable>
   );
 };
@@ -20,6 +29,7 @@ const styles = StyleSheet.create({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+    marginBottom: 20,
   },
 });
 

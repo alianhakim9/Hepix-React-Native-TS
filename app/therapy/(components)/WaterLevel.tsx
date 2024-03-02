@@ -56,6 +56,7 @@ const styles = StyleSheet.create({
   txt: {
     fontWeight: "bold",
     color: "#adadad",
+    width: "100%",
   },
   slider: {
     marginVertical: 20,

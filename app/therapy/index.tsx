@@ -1,14 +1,28 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { useRouter } from "expo-router";
+import { useFocusEffect, useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import React from "react";
-import { Pressable, SafeAreaView, StyleSheet, Text, View } from "react-native";
+import React, { useState } from "react";
+import {
+  Pressable,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import PowerButton from "./(components)/PowerButton";
 import WaterLevel from "./(components)/WaterLevel";
-import SemiCircleProgress from "./(components)/SemiCircleProgress";
+import { CountdownTimer } from "./(components)/CountdownTimer";
+import TimeSetter from "./(components)/TimeSetter";
+// import SemiCircleProgress from "./(components)/SemiCircleProgress";
 
 const Therapy = () => {
   const router = useRouter();
+  const [time, setTime] = useState(30);
+  const [waterLevel, setWaterLevel] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [fixTime, setFixTime] = useState(30);
+
   return (
     <>
       <SafeAreaView style={styles.container}>
@@ -18,53 +32,58 @@ const Therapy = () => {
           </Pressable>
           <Text style={styles.headingText}>Therapy</Text>
         </View>
-        <View style={styles.innerContainer}>
-          <Text style={styles.innerTxt}>Time Intensity</Text>
-          <SemiCircleProgress
-            percentage={30}
-            minValue={30}
-            maxValue={45}
-            interiorCircleColor="#F6DBAC"
-            progressColor="#00D1FF"
-          >
-            <View
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <View style={styles.innerContainer}>
+            <Text style={styles.innerTxt}>Time Intensity</Text>
+            <View>
+              <CountdownTimer
+                time={fixTime}
+                isPlaying={isPlaying}
+                onStop={() => {
+                  setIsPlaying(false);
+                  setFixTime(30);
+                }}
+              />
+            </View>
+            {/* <View
               style={{
                 display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
+                flexDirection: "row",
+                width: "70%",
+                justifyContent: "space-between",
               }}
             >
-              <Text
-                style={{
-                  fontSize: 35,
-                  fontWeight: "bold",
-                  marginBottom: 20,
-                }}
-              >
-                30 m
-              </Text>
-            </View>
-          </SemiCircleProgress>
-          <View
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              flexDirection: "row",
-              width: "70%",
-            }}
-          >
-            <Text style={styles.labelDurationTxt}>Min</Text>
-            <Text style={styles.labelDurationTxt}>Max</Text>
+              <Text style={styles.labelDurationTxt}>Min</Text>
+              <Text style={styles.labelDurationTxt}>Max</Text>
+            </View> */}
+            <TimeSetter
+              time={time}
+              onDecrease={() => {
+                if (time !== 30) {
+                  setTime((prev) => prev - 5);
+                }
+              }}
+              onIncrease={() => {
+                if (time !== 45) {
+                  setTime((prev) => prev + 5);
+                }
+              }}
+              disabled={isPlaying}
+            />
+            <PowerButton
+              onClick={() => {
+                setFixTime(time);
+                setIsPlaying((prev) => !prev);
+              }}
+              isOn={isPlaying}
+            />
+            <WaterLevel />
+            <Pressable style={styles.btn}>
+              <Text style={styles.btnTxt}>Add New Device</Text>
+            </Pressable>
           </View>
-          <PowerButton />
-          <WaterLevel />
-          <Pressable style={styles.btn}>
-            <Text style={styles.btnTxt}>Add New Device</Text>
-          </Pressable>
-        </View>
+        </ScrollView>
       </SafeAreaView>
-      <StatusBar backgroundColor="#3e3e3e" style="light" />
     </>
   );
 };
@@ -99,6 +118,8 @@ const styles = StyleSheet.create({
   innerTxt: {
     color: "white",
     fontWeight: "500",
+    width: "100%",
+    textAlign: "center",
   },
   btn: {
     backgroundColor: "#018393",
@@ -112,10 +133,12 @@ const styles = StyleSheet.create({
   },
   btnTxt: {
     color: "white",
+    width: "100%",
+    textAlign: "center",
   },
   labelDurationTxt: {
     color: "white",
-    fontWeight: "bold",
+    textAlign: "auto",
   },
 });
 

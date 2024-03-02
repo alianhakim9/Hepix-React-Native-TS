@@ -55,7 +55,6 @@ export default function Dashboard() {
         </ScrollView>
         <BottomBar />
       </SafeAreaView>
-      <StatusBar backgroundColor="#3e3e3e" style="light" />
     </>
   );
 }

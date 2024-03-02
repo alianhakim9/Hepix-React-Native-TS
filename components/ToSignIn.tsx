@@ -2,13 +2,13 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import React from "react";
 import { useRouter } from "expo-router";
 
-const ToSignUp = () => {
+const ToSignIn = () => {
   const router = useRouter();
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Doesn't have an account?</Text>
-      <TouchableOpacity onPress={() => router.replace("/auth/register")}>
-        <Text style={styles.registerBtnTxt}>Sign Up</Text>
+      <Text style={styles.text}>Already have an account?</Text>
+      <TouchableOpacity onPress={() => router.replace("/auth/login")}>
+        <Text style={styles.loginBtnTxt}>Sign In</Text>
       </TouchableOpacity>
     </View>
   );
@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
     color: "#fff",
     textAlign: "center",
   },
-  registerBtnTxt: {
+  loginBtnTxt: {
     fontWeight: "bold",
     color: "#F6DBAC",
     width: "100%",
@@ -33,4 +33,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ToSignUp;
+export default ToSignIn;
